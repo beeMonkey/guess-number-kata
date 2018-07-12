@@ -107,7 +107,7 @@ public class GameTest {
 
         //when
         //then
-        assertThat(game.checkStatus(), is("continue"));
+        assertThat(game.checkStatus(), is("success"));
 
     }
 
