@@ -4,11 +4,13 @@ package tw.core;/*
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tw.core.exception.OutOfGuessCountException;
 import tw.core.generator.AnswerGenerator;
 import tw.core.model.GuessResult;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +36,78 @@ public class GameTest {
         //when
         //then
         assertThat(guess.getResult(), is("4A0B"));
+
+    }
+
+    @Test
+    public void should_get_the_wrong_status_when_guess_input_is_incorrect() throws Exception {
+
+        //given
+//        excuteSuccessGuess();
+        try {
+            GuessResult guess = game.guess(Answer.createAnswer("1 2 3 9"));
+            GuessResult guess1 = game.guess(Answer.createAnswer("1 2 3 9"));
+            GuessResult guess2 = game.guess(Answer.createAnswer("0 8 3 9"));
+            GuessResult guess3 = game.guess(Answer.createAnswer("0 8 3 9"));
+            GuessResult guess4 = game.guess(Answer.createAnswer("0 8 3 9"));
+            GuessResult guess5 = game.guess(Answer.createAnswer("0 8 3 9"));
+            GuessResult guess6 = game.guess(Answer.createAnswer("0 8 3 9"));
+            fail("次数超过6");
+        }catch(OutOfGuessCountException exception){
+
+        }
+        //when
+        //then
+        //assertThat(guess.getResult(), is("4A0B"));
+
+    }
+
+    @Test
+    public void should_get_gueshistory_when_call_guessHistory() throws Exception {
+
+        //given
+//        excuteSuccessGuess();
+        GuessResult guess1 = game.guess(Answer.createAnswer("1 2 3 9"));
+        GuessResult guess2 = game.guess(Answer.createAnswer("0 8 3 9"));
+        //when
+        //then
+        assertThat(game.guessHistory().get(0), is(guess1));
+        assertThat(game.guessHistory().get(1), is(guess2));
+
+    }
+
+    @Test
+    public void should_get_fail_status_when_call_checkStatus_use_5_data() throws Exception {
+
+        //given
+//        excuteSuccessGuess();
+        GuessResult guess1 = game.guess(Answer.createAnswer("1 2 3 9"));
+        GuessResult guess2 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess3 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess4 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess5 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess6 = game.guess(Answer.createAnswer("0 8 3 9"));
+
+        //when
+        //then
+        assertThat(game.checkStatus(), is("fail"));
+
+    }
+
+    @Test
+    public void should_get_success_status_when_call_checkStatus_use_5_data() throws Exception {
+
+        //given
+//        excuteSuccessGuess();
+        GuessResult guess1 = game.guess(Answer.createAnswer("1 2 3 9"));
+        GuessResult guess2 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess3 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess4 = game.guess(Answer.createAnswer("0 8 3 9"));
+        GuessResult guess5 = game.guess(Answer.createAnswer("1 2 3 4"));
+
+        //when
+        //then
+        assertThat(game.checkStatus(), is("continue"));
 
     }
 
